@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "cmath": "cpp",
+        "iomanip": "cpp",
+        "random": "cpp",
+        "functional": "cpp",
+        "*.tcc": "cpp",
+        "string": "cpp",
+        "string_view": "cpp",
+        "ratio": "cpp"
+    }
+}

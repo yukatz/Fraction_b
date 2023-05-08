@@ -16,11 +16,10 @@ namespace ariel
         // Constructors
         Fraction();
         Fraction(int a, int b);
-        Fraction(double num);
+        Fraction(double Fraction);
+       
 
         void fractReduct();
-
-
 
         // Getters&Setters
         int getNum();
@@ -28,8 +27,6 @@ namespace ariel
         void setNum(int n);
         void setDenom(int n);
 
-        // toString
-        string fractToString();
 
         // Overloading operators +,-,*,/
         // Fraction VS Fraction
@@ -73,12 +70,12 @@ namespace ariel
         friend bool operator>=(double number, const Fraction &other);
 
         // Fraction ++/--
-        Fraction &operator++(int number);
-        Fraction &operator--(int number);
+        friend Fraction operator++(Fraction &frac, int);
+        friend Fraction operator--(Fraction &frac, int);
 
         //++/--Fraction
-        Fraction operator--();
-        Fraction operator++();
+        const Fraction operator--();
+        const Fraction operator++();
 
         // Consule In & Consule Out
         friend ostream &operator<<(ostream &os, const Fraction &f);
@@ -87,4 +84,4 @@ namespace ariel
         int lcm(int a, int b) const;
         int gcd(int a, int b) const;
     };
-};
+}

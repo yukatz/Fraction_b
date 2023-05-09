@@ -11,6 +11,9 @@ namespace ariel
             __throw_invalid_argument("Can't divide by 0");
         else
         {
+            int gcd = this->gcd(n, d);
+            n /= gcd;
+            d /= gcd;
             numerator = n;
             denominator = d;
         }
@@ -152,106 +155,92 @@ namespace ariel
     // Fraction VS Fraction
     bool Fraction::operator==(const Fraction &other) const
     {
-        double a = this->numerator / this->denominator;
-        double b = other.numerator / other.denominator;
+        double a = (double)this->numerator / this->denominator;
+        double b = (double)other.numerator / other.denominator;
         return a == b;
     }
     bool Fraction::operator<(const Fraction &other) const
     {
-        double a = this->numerator / this->denominator;
-        double b = other.numerator / other.denominator;
-        return a > b;
+        double a = (double)this->numerator / this->denominator;
+        double b = (double)other.numerator / other.denominator;
+        return a < b;
     }
     bool Fraction::operator>(const Fraction &other) const
     {
-        double a = this->numerator / this->denominator;
-        double b = other.numerator / other.denominator;
-        return a < b;
+        double a = (double)this->numerator / this->denominator;
+        double b = (double)other.numerator / other.denominator;
+        return a > b;
     }
     bool Fraction::operator<=(const Fraction &other) const
     {
-        double a = this->numerator / this->denominator;
-        double b = other.numerator / other.denominator;
-        return a >= b;
+        return (operator==(other) || operator<(other));
     }
     bool Fraction::operator>=(const Fraction &other) const
     {
-        double a = this->numerator / this->denominator;
-        double b = other.numerator / other.denominator;
-        return a <= b;
+        return (operator==(other) || operator>(other));
     }
 
     // Fraction VS Number
     bool Fraction::operator==(double number) const
     {
         Fraction num = Fraction(number);
-        double a = this->numerator / this->denominator;
-        double b = num.numerator / num.denominator;
-        return a == b;
+        return operator==(num);
     }
     bool Fraction::operator<(double number) const
     {
         Fraction num = Fraction(number);
-        double a = this->numerator / this->denominator;
-        double b = num.numerator / num.denominator;
-        return a < b;
+        return operator<(num);
     }
     bool Fraction::operator>(double number) const
     {
         Fraction num = Fraction(number);
-        double a = this->numerator / this->denominator;
-        double b = num.numerator / num.denominator;
-        return a > b;
+        return operator>(num);
     }
     bool Fraction::operator<=(double number) const
     {
         Fraction num = Fraction(number);
-        double a = this->numerator / this->denominator;
-        double b = num.numerator / num.denominator;
-        return a >= b;
+        return operator<=(num);
     }
     bool Fraction::operator>=(double number) const
     {
         Fraction num = Fraction(number);
-        double a = this->numerator / this->denominator;
-        double b = num.numerator / num.denominator;
-        return a <= b;
+        return operator>=(num);
     }
 
     // Number VS Fraction
     bool operator==(double number, const Fraction &other)
     {
         Fraction num = Fraction(number);
-        double a = other.numerator / other.denominator;
-        double b = num.numerator / num.denominator;
+        double a = (double)other.numerator / other.denominator;
+        double b = (double)num.numerator / num.denominator;
         return a == b;
     }
     bool operator<(double number, const Fraction &other)
     {
         Fraction num = Fraction(number);
-        double a = other.numerator / other.denominator;
-        double b = num.numerator / num.denominator;
+        double a = (double)other.numerator / other.denominator;
+        double b = (double)num.numerator / num.denominator;
         return a < b;
     }
     bool operator>(double number, const Fraction &other)
     {
         Fraction num = Fraction(number);
-        double a = other.numerator / other.denominator;
-        double b = num.numerator / num.denominator;
+        double a = (double)other.numerator / other.denominator;
+        double b = (double)num.numerator / num.denominator;
         return a > b;
     }
     bool operator<=(double number, const Fraction &other)
     {
         Fraction num = Fraction(number);
-        double a = other.numerator / other.denominator;
-        double b = num.numerator / num.denominator;
+        double a = (double)other.numerator / other.denominator;
+        double b = (double)num.numerator / num.denominator;
         return a <= b;
     }
     bool operator>=(double number, const Fraction &other)
     {
         Fraction num = Fraction(number);
-        double a = other.numerator / other.denominator;
-        double b = num.numerator / num.denominator;
+        double a = (double)other.numerator / other.denominator;
+        double b = (double)num.numerator / num.denominator;
         return a >= b;
     }
 

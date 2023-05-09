@@ -5,17 +5,17 @@
 namespace ariel
 {
     Fraction::Fraction() {}
-    Fraction::Fraction(int n, int d)
+    Fraction::Fraction(int Numerator, int Denumerator)
     {
-        if (d == 0)
-            __throw_invalid_argument("Can't divide by 0");
+        if (Denumerator == 0)
+            std::__throw_runtime_error("Can't divide by 0");
         else
         {
-            int gcd = this->gcd(n, d);
-            n /= gcd;
-            d /= gcd;
-            numerator = n;
-            denominator = d;
+            int gcd = this->gcd(Numerator, Denumerator);
+            Numerator /= gcd;
+            Denumerator /= gcd;
+            numerator = Numerator;
+            denominator = Denumerator;
         }
     }
     Fraction::Fraction(double n)
@@ -25,7 +25,6 @@ namespace ariel
         this->numerator = num / (gcd(num, denum));
         this->denominator = denum / (gcd(num, denum));
     }
-
     void Fraction::fractReduct()
     {
         int gcd = this->gcd(this->numerator, this->denominator);
@@ -33,14 +32,14 @@ namespace ariel
         this->denominator /= gcd;
     }
 
-    int Fraction::getNum()
+    int Fraction::getNumerator()const
     {
-        return numerator;
+        return this->numerator;
     }
 
-    int Fraction::getDenom()
+    int Fraction::getDenominator()const
     {
-        return denominator;
+        return this->denominator;
     }
 
     void Fraction::setNum(int n)
@@ -82,7 +81,7 @@ namespace ariel
     Fraction Fraction::operator/(const Fraction &other) const
     {
         if (other.denominator == 0 && other.numerator == 0)
-            __throw_invalid_argument("Can't divide by 0");
+            std::__throw_runtime_error("Can't divide by 0");
         else
         {
             int newNumerator = numerator * other.denominator;
@@ -97,7 +96,7 @@ namespace ariel
     Fraction Fraction::operator+(double number) const
     {
         Fraction other = Fraction(number);
-        std::cout << other.getNum() << "/" << other.getDenom() << endl;
+        std::cout << other.getNumerator() << "/" << other.getDenominator() << endl;
         return this->operator+(other);
     }
     Fraction Fraction::operator-(double number) const
@@ -114,7 +113,7 @@ namespace ariel
     Fraction Fraction::operator/(double number) const
     {
         if (number == 0)
-            __throw_invalid_argument("Can't divide by 0");
+            std::__throw_runtime_error("Can't divide by 0");
         else
         {
             Fraction other = Fraction(number);
@@ -136,14 +135,14 @@ namespace ariel
     Fraction operator*(double number, const Fraction &other)
     {
         Fraction num = Fraction(number);
-        std::cout << num.getNum() << "/" << num.getDenom() << endl;
+        std::cout << num.getNumerator() << "/" << num.getDenominator() << endl;
 
         return num.operator*(other);
     }
     Fraction operator/(double number, const Fraction &other)
     {
         if (other.denominator == 0 && other.numerator == 0)
-            __throw_invalid_argument("Can't divide by 0");
+            std::__throw_runtime_error("Can't divide by 0");
         else
         {
             Fraction num = Fraction(number);
@@ -220,41 +219,41 @@ namespace ariel
         Fraction num = Fraction(number);
         double a = (double)other.numerator / other.denominator;
         double b = (double)num.numerator / num.denominator;
-        return a < b;
+        return b < a;
     }
     bool operator>(double number, const Fraction &other)
     {
         Fraction num = Fraction(number);
         double a = (double)other.numerator / other.denominator;
         double b = (double)num.numerator / num.denominator;
-        return a > b;
+        return b > a;
     }
     bool operator<=(double number, const Fraction &other)
     {
         Fraction num = Fraction(number);
         double a = (double)other.numerator / other.denominator;
         double b = (double)num.numerator / num.denominator;
-        return a <= b;
+        return b <= a;
     }
     bool operator>=(double number, const Fraction &other)
     {
         Fraction num = Fraction(number);
         double a = (double)other.numerator / other.denominator;
         double b = (double)num.numerator / num.denominator;
-        return a >= b;
+        return b >= a;
     }
 
     // postfix increment
     Fraction operator++(Fraction &frac, int)
     {
-        Fraction cpy(frac.getNum(), frac.getDenom());
+        Fraction cpy(frac.getNumerator(), frac.getDenominator());
         ++frac;
         return cpy;
     }
     Fraction operator--(Fraction &frac, int)
     // postfix decrement
     {
-        Fraction cpy(frac.getNum(), frac.getDenom());
+        Fraction cpy(frac.getNumerator(), frac.getDenominator());
         --frac;
         return cpy;
     }
@@ -273,30 +272,56 @@ namespace ariel
     }
 
     // Consule In & Consule Out
-    ostream &operator<<(std::ostream &os, const Fraction &f)
+    ostream &operator<<(std::ostream &outStream, const Fraction &fraction)
     {
-        os << f.numerator << "/" << f.denominator << " ";
-        return os;
+        outStream << fraction.getNumerator() << "/" << fraction.getDenominator();
+        return outStream;
     }
-    istream &operator>>(istream &is, Fraction &f)
+    istream &operator>>(istream &inStream, Fraction &fraction)
     {
-        is >> f.numerator >> f.denominator;
-        return is;
-    }
-
-    int Fraction::gcd(int a, int b) const
-    {
-        while (b != 0)
+           if (inStream.peek() == EOF)//first argument
         {
-            int t = b;
-            b = a % b;
-            a = t;
+            throw std::runtime_error("The input is empty");
         }
-        return a;
+        if (!(inStream >> fraction.numerator))//save the 1'st argument as a numerator
+        {
+            throw std::runtime_error("Not valid input for numerator");
+        }
+        if (inStream.peek() == EOF)//second argument
+        {
+            throw std::runtime_error("Not valid input, only 1 argument was entered");
+        }
+        if (!(inStream >> fraction.denominator))//save the 2'nd argument as a denumerator
+        {
+            throw std::runtime_error("Not valid input for denumerator");
+        }
+        if (fraction.denominator == 0)//check if the denomerator is 0
+        {
+            throw std::runtime_error("Can't divide by 0");
+        }
+        else if (fraction.denominator < 0) //helnde with possetive denomerator
+        {
+            fraction.numerator *= -1;
+            fraction.denominator *= -1;
+        }
+
+        return inStream;
+        
     }
 
-    int Fraction::lcm(int a, int b) const
+    int Fraction::gcd(int numerator, int denumerator) const
     {
-        return (a * b) / gcd(a, b);
+        while (denumerator != 0)
+        {
+            int t = denumerator;
+            denumerator = numerator % denumerator;
+            numerator = t;
+        }
+        return numerator;
+    }
+
+    int Fraction::lcm(int numerator, int denumerator) const
+    {
+        return (numerator * denumerator) / gcd(numerator, denumerator);
     }
 }

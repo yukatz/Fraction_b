@@ -34,4 +34,16 @@ int main() {
     else cout << " a is smaller than 1.1" << endl;
 
 
+
+    std::cout<<"////////////////My demo part///////////////S"<<endl;
+    Fraction s(1,2);
+    cout<< (0.3 < s) << endl;
+    cout<< (0.3 >= s) << endl;
+    cout<< (1 > s) << endl;
+    cout<< (1 <= s) << endl;
+    cout<< (1 >= s) << endl;
+    cout<< (1 < s) << endl;
+
+    
+
 }

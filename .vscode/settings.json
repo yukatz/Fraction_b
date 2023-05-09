@@ -7,6 +7,8 @@
         "*.tcc": "cpp",
         "string": "cpp",
         "string_view": "cpp",
-        "ratio": "cpp"
+        "ratio": "cpp",
+        "iosfwd": "cpp",
+        "stdexcept": "cpp"
     }
 }

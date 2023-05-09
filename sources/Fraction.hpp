@@ -15,15 +15,15 @@ namespace ariel
     public:
         // Constructors
         Fraction();
-        Fraction(int a, int b);
+        Fraction(int numerator, int denumerator);
         Fraction(double Fraction);
        
 
         void fractReduct();
 
         // Getters&Setters
-        int getNum();
-        int getDenom();
+        int getNumerator()const;
+        int getDenominator()const;
         void setNum(int n);
         void setDenom(int n);
 
@@ -78,10 +78,10 @@ namespace ariel
         const Fraction operator++();
 
         // Consule In & Consule Out
-        friend ostream &operator<<(ostream &os, const Fraction &f);
-        friend istream &operator>>(istream &is, Fraction &f);
+        friend ostream &operator<<(ostream &outStrean, const Fraction &fraction);
+        friend istream &operator>>(istream &inStream, Fraction &fraction);
 
-        int lcm(int a, int b) const;
-        int gcd(int a, int b) const;
+        int lcm(int numerator, int denumerator) const;
+        int gcd(int numerator, int denumerator) const;
     };
 }

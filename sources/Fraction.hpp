@@ -24,8 +24,8 @@ namespace ariel
         // Getters&Setters
         int getNumerator()const;
         int getDenominator()const;
-        void setNum(int n);
-        void setDenom(int n);
+        void setNum(int number);
+        void setDenom(int number);
 
 
         // Overloading operators +,-,*,/

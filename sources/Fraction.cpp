@@ -1,7 +1,7 @@
 #include "Fraction.hpp"
 #include <cmath>
 #include <iomanip>
-
+#include <limits>
 namespace ariel
 {
     Fraction::Fraction() {}
@@ -10,14 +10,22 @@ namespace ariel
 
         if (Denumerator == 0)
         {
-            std::__throw_runtime_error("Can't divide by 0");
+            std::__throw_invalid_argument("Can't divide by 0");
         }
-
         else
         {
+
             int gcd = this->gcd(Numerator, Denumerator);
+            if (gcd < 0 && Numerator < 0 && Denumerator > 0)
+            {
+                gcd *= -1;
+            }
+            // std::cout<<"gcd: "<<gcd<<endl;
             Numerator /= gcd;
             Denumerator /= gcd;
+            // std::cout<<"Numerator: "<<Numerator<<endl;
+            // std::cout<<"Denumerator: "<<Denumerator<<endl;
+
             numerator = Numerator;
             denominator = Denumerator;
         }
@@ -34,7 +42,8 @@ namespace ariel
         int gcd = this->gcd(this->numerator, this->denominator);
         int numerator = this->numerator / gcd;
         int denominator = this->denominator / gcd;
-        if(denominator<0){
+        if (denominator < 0)
+        {
             numerator *= -1;
             denominator *= -1;
         }
@@ -61,44 +70,104 @@ namespace ariel
         denominator = number;
     }
 
+    bool overFlow(const Fraction &fraction)
+    {
+        const long long maximum = std::numeric_limits<int>::max();
+        const long long minimum = std::numeric_limits<int>::min();
+        long long numerator = fraction.numerator;
+        long long denominator = fraction.denominator;
+        if ((numerator / denominator >= maximum) || (numerator / denominator <= minimum))
+        {
+            if (numerator >= maximum || numerator <= minimum || denominator >= maximum || denominator <= minimum)
+            {
+                // if (!((numerator >= maximum && denominator <= minimum) || (numerator <= minimum && denominator >= maximum)
+                //       || (numerator >= maximum && denominator >= maximum)||(numerator <= minimum && denominator <= minimum)))
+
+                // {
+                return true;
+                // }
+            }
+        }
+
+        return false;
+    }
+
     Fraction Fraction::operator+(const Fraction &other) const
     {
-        int commonDenominator = lcm(denominator, other.denominator);
-        int newNumerator = numerator * (commonDenominator / denominator) + other.numerator * (commonDenominator / other.denominator);
-        Fraction a(newNumerator, commonDenominator);
-        a.fractReduct();
-        return a;
+        // long long firstNum = this->numerator;
+        // long long secondNum = this->denominator;
+        // long long firstDenum = other.numerator;
+        // long long secondDenum = other.denominator;
+        // const long long maximum = std::numeric_limits<int>::max();
+        // const long long minimum = std::numeric_limits<int>::min();
+        // if (firstNum >= maximum || firstNum <= minimum || firstDenum >= maximum || firstDenum <= minimum ||
+        //     secondNum >= maximum || secondNum <= minimum || secondDenum >= maximum || secondDenum <= minimum)
+        if (overFlow(*this) || overFlow(other))
+        {
+            __throw_overflow_error("Overflow");
+        }
+        else
+        {
+            int commonDenominator = lcm(denominator, other.denominator);
+            int newNumerator = numerator * (commonDenominator / denominator) + other.numerator * (commonDenominator / other.denominator);
+            Fraction a(newNumerator, commonDenominator);
+            a.fractReduct();
+            return a;
+        }
     }
 
     Fraction Fraction::operator-(const Fraction &other) const
     {
-        int commonDenominator = lcm(denominator, other.denominator);
-        int newNumerator = numerator * (commonDenominator / denominator) - other.numerator * (commonDenominator / other.denominator);
-        Fraction a(newNumerator, commonDenominator);
-        a.fractReduct();
-        return a;
+
+        if (overFlow(*this) || overFlow(other))
+        {
+            __throw_overflow_error("Overflow");
+        }
+        else
+        {
+            int commonDenominator = lcm(denominator, other.denominator);
+            int newNumerator = numerator * (commonDenominator / denominator) - other.numerator * (commonDenominator / other.denominator);
+            Fraction a(newNumerator, commonDenominator);
+            a.fractReduct();
+            return a;
+        }
     }
 
     Fraction Fraction::operator*(const Fraction &other) const
     {
-        int newNumerator = numerator * other.numerator;
-        int newDenominator = denominator * other.denominator;
-        Fraction a(newNumerator, newDenominator);
-        a.fractReduct();
-        return a;
+
+        if (overFlow(*this) || overFlow(other))
+        {
+            __throw_overflow_error("Overflow");
+        }
+        else
+        {
+            int newNumerator = numerator * other.numerator;
+            int newDenominator = denominator * other.denominator;
+            Fraction a(newNumerator, newDenominator);
+            a.fractReduct();
+            return a;
+        }
     }
 
     Fraction Fraction::operator/(const Fraction &other) const
     {
-        if (other.denominator == 0 && other.numerator == 0)
-            std::__throw_runtime_error("Can't divide by 0");
+        if (overFlow(*this) || overFlow(other))
+        {
+            __throw_overflow_error("Overflow");
+        }
         else
         {
-            int newNumerator = numerator * other.denominator;
-            int newDenominator = denominator * other.numerator;
-            Fraction a(newNumerator, newDenominator);
-            a.fractReduct();
-            return a;
+            if (other.denominator == 0 || other.numerator == 0)
+                std::__throw_runtime_error("Can't divide by 0");
+            else
+            {
+                int newNumerator = numerator * other.denominator;
+                int newDenominator = denominator * other.numerator;
+                Fraction a(newNumerator, newDenominator);
+                a.fractReduct();
+                return a;
+            }
         }
     }
 
@@ -309,7 +378,7 @@ namespace ariel
         {
             throw std::runtime_error("Can't divide by 0");
         }
-        else if (fraction.denominator < 0) // helnde with possetive denomerator
+        if (fraction.denominator < 0) // helnde with possetive denomerator
         {
             fraction.numerator *= -1;
             fraction.denominator *= -1;

@@ -26,6 +26,8 @@ namespace ariel
         int getDenominator()const;
         void setNum(int number);
         void setDenom(int number);
+        friend bool overFlow(const Fraction &other);
+
 
 
         // Overloading operators +,-,*,/

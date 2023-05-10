@@ -44,6 +44,16 @@ int main() {
     cout<< (1 >= s) << endl;
     cout<< (1 < s) << endl;
 
+    std::stringstream ss;
+    ss.str("");
+    Fraction neg_frac{-7, 9};
+    ss << neg_frac;
+    cout<<neg_frac<<endl;
+    cout<<neg_frac.getNumerator()<<endl;
+    cout<<neg_frac.getDenominator()<<endl;
+    
+
+
     
 
 }

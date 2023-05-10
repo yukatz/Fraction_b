@@ -20,12 +20,8 @@ namespace ariel
             {
                 gcd *= -1;
             }
-            // std::cout<<"gcd: "<<gcd<<endl;
             Numerator /= gcd;
             Denumerator /= gcd;
-            // std::cout<<"Numerator: "<<Numerator<<endl;
-            // std::cout<<"Denumerator: "<<Denumerator<<endl;
-
             numerator = Numerator;
             denominator = Denumerator;
         }
@@ -69,23 +65,18 @@ namespace ariel
     {
         denominator = number;
     }
-
     bool overFlow(const Fraction &fraction)
     {
         const long long maximum = std::numeric_limits<int>::max();
         const long long minimum = std::numeric_limits<int>::min();
-        long long numerator = fraction.numerator;
-        long long denominator = fraction.denominator;
-        if ((numerator / denominator >= maximum) || (numerator / denominator <= minimum))
+        long long numerator = static_cast<long long>(fraction.numerator);
+        long long denominator = static_cast<long long>(fraction.denominator);
+        double result = static_cast<double>(numerator) / static_cast<double>(denominator);
+        if ((result >= maximum) || (result <= minimum))
         {
             if (numerator >= maximum || numerator <= minimum || denominator >= maximum || denominator <= minimum)
             {
-                // if (!((numerator >= maximum && denominator <= minimum) || (numerator <= minimum && denominator >= maximum)
-                //       || (numerator >= maximum && denominator >= maximum)||(numerator <= minimum && denominator <= minimum)))
-
-                // {
                 return true;
-                // }
             }
         }
 
@@ -94,14 +85,6 @@ namespace ariel
 
     Fraction Fraction::operator+(const Fraction &other) const
     {
-        // long long firstNum = this->numerator;
-        // long long secondNum = this->denominator;
-        // long long firstDenum = other.numerator;
-        // long long secondDenum = other.denominator;
-        // const long long maximum = std::numeric_limits<int>::max();
-        // const long long minimum = std::numeric_limits<int>::min();
-        // if (firstNum >= maximum || firstNum <= minimum || firstDenum >= maximum || firstDenum <= minimum ||
-        //     secondNum >= maximum || secondNum <= minimum || secondDenum >= maximum || secondDenum <= minimum)
         if (overFlow(*this) || overFlow(other))
         {
             __throw_overflow_error("Overflow");
@@ -112,13 +95,13 @@ namespace ariel
             int newNumerator = numerator * (commonDenominator / denominator) + other.numerator * (commonDenominator / other.denominator);
             Fraction a(newNumerator, commonDenominator);
             a.fractReduct();
+
             return a;
         }
     }
 
     Fraction Fraction::operator-(const Fraction &other) const
     {
-
         if (overFlow(*this) || overFlow(other))
         {
             __throw_overflow_error("Overflow");
@@ -135,40 +118,44 @@ namespace ariel
 
     Fraction Fraction::operator*(const Fraction &other) const
     {
-
-        if (overFlow(*this) || overFlow(other))
-        {
-            __throw_overflow_error("Overflow");
-        }
-        else
-        {
-            int newNumerator = numerator * other.numerator;
-            int newDenominator = denominator * other.denominator;
+        const long long maximum = std::numeric_limits<int>::max();
+        const long long minimum = std::numeric_limits<int>::min();
+        //if (overFlow(*this) || overFlow(other))
+       // {
+      //      __throw_overflow_error("Overflow");
+      //  }
+      //  else
+     //   {
+            long long newNumerator = static_cast<long long>(numerator) * static_cast<long long>(other.numerator);
+            long long newDenominator = static_cast<long long>(denominator) * static_cast<long long>(other.denominator);
             Fraction a(newNumerator, newDenominator);
+
+            if (static_cast<long long>(numerator) >= maximum || static_cast<long long>(numerator) <= minimum || static_cast<long long>(denominator) >= maximum || static_cast<long long>(denominator) <= minimum)
+            {
+                __throw_overflow_error("Overflow");
+            }
             a.fractReduct();
+
             return a;
-        }
+      //  }
     }
 
     Fraction Fraction::operator/(const Fraction &other) const
     {
-        if (overFlow(*this) || overFlow(other))
-        {
-            __throw_overflow_error("Overflow");
-        }
-        else
-        {
+        //if (overFlow(*this) || overFlow(other))
+        //{
+       //     __throw_overflow_error("Overflow");
+       // }
+       // else
+       // {
             if (other.denominator == 0 || other.numerator == 0)
                 std::__throw_runtime_error("Can't divide by 0");
             else
             {
-                int newNumerator = numerator * other.denominator;
-                int newDenominator = denominator * other.numerator;
-                Fraction a(newNumerator, newDenominator);
-                a.fractReduct();
-                return a;
+                Fraction fliped(other.denominator, other.numerator);
+                return operator*(fliped);
             }
-        }
+       // }
     }
 
     // Fraction VS Number

@@ -14,8 +14,8 @@ namespace ariel
 
     public:
         // Constructors
-        Fraction();
-        Fraction(int numerator, int denumerator);
+        Fraction();//defoult
+        Fraction(int numerator, int denumerator);//
         Fraction(double Fraction);
        
 
@@ -27,8 +27,6 @@ namespace ariel
         void setNum(int number);
         void setDenom(int number);
         friend bool overFlow(const Fraction &other);
-
-
 
         // Overloading operators +,-,*,/
         // Fraction VS Fraction

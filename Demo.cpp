@@ -54,16 +54,22 @@ int main() {
     cout<<neg_frac.getDenominator()<<endl;
     cout << "///////OverFlow/////////" << endl;
 
-    int max_int = std::numeric_limits<int>::max();
-    int min_int = std::numeric_limits<int>::min();
+    long long max_int = std::numeric_limits<int>::max();
+    long long min_int = std::numeric_limits<int>::min();
 
-    Fraction f2(1, max_int);
-    Fraction f4(max_int - 100, max_int);
     Fraction f5(max_int - 1, 1);
     Fraction f7(min_int + 1, 1);
+    Fraction f4(max_int - 100, max_int);
+    Fraction f3(max_int, max_int);
+
+    cout << "(f5 - f7): " <<static_cast<long long>((max_int - 1)-(min_int + 1)) << endl;
+    cout << "(f4 / f3): " <<static_cast<long long>(static_cast<double>(max_int - 100)/ static_cast<double>(max_int)) << endl;
+    cout << "(f4 * f3): " <<(f4 * f3) << endl;
+
+    cout << "(f4 / f3): " <<(f4 / f3) << endl;
     
-    cout << "(f2 / f4): " <<(f2 / f4) << endl;
-    cout << "(f2 * f4): " <<(f2 * f4) << endl;
+    
     cout << "(f5 - f7): " <<(f5 - f7) << endl;
+
 
 }

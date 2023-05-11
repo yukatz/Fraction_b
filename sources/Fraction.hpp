@@ -14,9 +14,9 @@ namespace ariel
 
     public:
         // Constructors
-        Fraction();//defoult
-        Fraction(int numerator, int denumerator);//
-        Fraction(double Fraction);
+        Fraction();//default
+        Fraction(int numerator, int denumerator);//with arguments
+        Fraction(double Fraction);//with double input, converts to fraction
        
 
         void fractReduct();
@@ -26,7 +26,7 @@ namespace ariel
         int getDenominator()const;
         void setNum(int number);
         void setDenom(int number);
-        friend bool overFlow(const Fraction &other);
+        friend bool overFlow(const Fraction &other);//Checking the overflow in fraction
 
         // Overloading operators +,-,*,/
         // Fraction VS Fraction
